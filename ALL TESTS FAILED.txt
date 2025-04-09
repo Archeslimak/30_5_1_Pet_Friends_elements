@@ -1,0 +1,307 @@
+(.venv) PS D:\GitProjects\30_5_1_selenium_elements> python -m pytest -v --driver Chrome --driver-path D:/PyProjects/Chrdrv/chromedriver-win64/chromedriver test_se.py 
+======================================================================================================= test session starts =======================================================================================================
+platform win32 -- Python 3.13.1, pytest-6.2.5, py-1.11.0, pluggy-1.5.0 -- D:\GitProjects\30_5_1_selenium_elements\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.13.1', 'Platform': 'Windows-10-10.0.19045-SP0', 'Packages': {'pytest': '6.2.5', 'pluggy': '1.5.0'}, 'Plugins': {'base-url': '2.0.0', 'html': '3.2.0', 'metadata': '2.0.4', 'selenium': '4.0.0', 'variables': '2.0.0'}, 'Base URL': '', 'Driver': 'Chrome', 'Capabilities': {}}
+driver: Chrome
+sensitiveurl: .*
+rootdir: D:\GitProjects\30_5_1_selenium_elements
+plugins: base-url-2.0.0, html-3.2.0, metadata-2.0.4, selenium-4.0.0, variables-2.0.0
+collected 2 items                                                                                                                                                                                                                  
+
+test_se.py::test_show_all_pets 
+DevTools listening on ws://127.0.0.1:58596/devtools/browser/8659106d-83fc-41a3-be13-4a9bb9fb8ac6
+FAILED                                                                                                                                                                                        [ 50%]
+test_se.py::test_pet_list
+DevTools listening on ws://127.0.0.1:58624/devtools/browser/a2e50c6b-f875-4ea8-9ee6-3a6f932d2b6c
+FAILED                                                                                                                                                                                             [100%]
+
+============================================================================================================ FAILURES ============================================================================================================= 
+_______________________________________________________________________________________________________ test_show_all_pets ________________________________________________________________________________________________________ 
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="679e1ba27b52499d89adbde891001901")>
+
+    def test_show_all_pets(driver):
+        driver.get('http://petfriends.skillfactory.ru/login')
+>       WDW = WebDriverWait(driver, 10).until(EC.url_contains("/my_pets"))
+
+test_se.py:16:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.support.wait.WebDriverWait (session="679e1ba27b52499d89adbde891001901")>, method = <function url_contains.<locals>._predicate at 0x000001EEEC3F0180>, message = ''
+
+    def until(self, method, message: str = ""):
+        """Calls the method provided with the driver as an argument until the \
+        return value does not evaluate to ``False``.
+
+        :param method: callable(WebDriver)
+        :param message: optional message for :exc:`TimeoutException`
+        :returns: the result of the last call to `method`
+        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs
+        """
+        screen = None
+        stacktrace = None
+
+        end_time = time.monotonic() + self._timeout
+        while True:
+            try:
+                value = method(self._driver)
+                if value:
+                    return value
+            except self._ignored_exceptions as exc:
+                screen = getattr(exc, "screen", None)
+                stacktrace = getattr(exc, "stacktrace", None)
+            time.sleep(self._poll)
+            if time.monotonic() > end_time:
+                break
+>       raise TimeoutException(message, screen, stacktrace)
+E       selenium.common.exceptions.TimeoutException: Message:
+
+.venv\Lib\site-packages\selenium\webdriver\support\wait.py:95: TimeoutException
+__________________________________________________________________________________________________________ test_pet_list __________________________________________________________________________________________________________ 
+
+driver = <selenium.webdriver.chrome.webdriver.WebDriver (session="7bdff3e09ce91b01d0ba368b2ef2a115")>
+
+    def test_pet_list(driver):
+        driver.get('http://petfriends.skillfactory.ru/login')
+>       pets = get_pets(driver)
+
+test_se.py:92:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test_se.py:57: in get_pets
+    driver.find_element(By.XPATH, '/html/body/nav/div[1]/ul/li[1]/a').click()
+.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py:94: in click
+    self._execute(Command.CLICK_ELEMENT)
+.venv\Lib\site-packages\selenium\webdriver\remote\webelement.py:403: in _execute
+    return self._parent.execute(command, params)
+.venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py:440: in execute
+    self.error_handler.check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x000001EEEC385590>
+response = {'status': 400, 'value': '{"value":{"error":"element not interactable","message":"element not interactable\\n  (Sessio...FFC60379+5465]\\n\\tBaseThreadInitThunk [0x00007FFEB0EA7374+20]\\n\\tRtlUserThreadStart [0x00007FFEB171CC91+33]\\n"}}'}
+
+    def check_response(self, response: Dict[str, Any]) -> None:
+        """Checks that a JSON response from the WebDriver does not have an
+        error.
+
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+
+        :Raises: If the response contains an error message.
+        """
+        status = response.get("status", None)
+        if not status or status == ErrorCode.SUCCESS:
+            return
+        value = None
+        message = response.get("message", "")
+        screen: str = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get("value", None)
+            if value_json and isinstance(value_json, str):
+                import json
+
+                try:
+                    value = json.loads(value_json)
+                    if len(value) == 1:
+                        value = value["value"]
+                    status = value.get("error", None)
+                    if not status:
+                        status = value.get("status", ErrorCode.UNKNOWN_ERROR)
+                        message = value.get("value") or value.get("message")
+                        if not isinstance(message, str):
+                            value = message
+                            message = message.get("message")
+                    else:
+                        message = value.get("message", None)
+                except ValueError:
+                    pass
+
+        exception_class: Type[WebDriverException]
+        if status in ErrorCode.NO_SUCH_ELEMENT:
+            exception_class = NoSuchElementException
+        elif status in ErrorCode.NO_SUCH_FRAME:
+            exception_class = NoSuchFrameException
+        elif status in ErrorCode.NO_SUCH_SHADOW_ROOT:
+            exception_class = NoSuchShadowRootException
+        elif status in ErrorCode.NO_SUCH_WINDOW:
+            exception_class = NoSuchWindowException
+        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:
+            exception_class = StaleElementReferenceException
+        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:
+            exception_class = ElementNotVisibleException
+        elif status in ErrorCode.INVALID_ELEMENT_STATE:
+            exception_class = InvalidElementStateException
+        elif (
+            status in ErrorCode.INVALID_SELECTOR
+            or status in ErrorCode.INVALID_XPATH_SELECTOR
+            or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER
+        ):
+            exception_class = InvalidSelectorException
+        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:
+            exception_class = ElementNotSelectableException
+        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:
+            exception_class = ElementNotInteractableException
+        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:
+            exception_class = InvalidCookieDomainException
+        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:
+            exception_class = UnableToSetCookieException
+        elif status in ErrorCode.TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.SCRIPT_TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.UNKNOWN_ERROR:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:
+            exception_class = UnexpectedAlertPresentException
+        elif status in ErrorCode.NO_ALERT_OPEN:
+            exception_class = NoAlertPresentException
+        elif status in ErrorCode.IME_NOT_AVAILABLE:
+            exception_class = ImeNotAvailableException
+        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:
+            exception_class = ImeActivationFailedException
+        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:
+            exception_class = MoveTargetOutOfBoundsException
+        elif status in ErrorCode.JAVASCRIPT_ERROR:
+            exception_class = JavascriptException
+        elif status in ErrorCode.SESSION_NOT_CREATED:
+            exception_class = SessionNotCreatedException
+        elif status in ErrorCode.INVALID_ARGUMENT:
+            exception_class = InvalidArgumentException
+        elif status in ErrorCode.NO_SUCH_COOKIE:
+            exception_class = NoSuchCookieException
+        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:
+            exception_class = ScreenshotException
+        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:
+            exception_class = ElementClickInterceptedException
+        elif status in ErrorCode.INSECURE_CERTIFICATE:
+            exception_class = InsecureCertificateException
+        elif status in ErrorCode.INVALID_COORDINATES:
+            exception_class = InvalidCoordinatesException
+        elif status in ErrorCode.INVALID_SESSION_ID:
+            exception_class = InvalidSessionIdException
+        elif status in ErrorCode.UNKNOWN_METHOD:
+            exception_class = UnknownMethodException
+        else:
+            exception_class = WebDriverException
+        if not value:
+            value = response["value"]
+        if isinstance(value, str):
+            raise exception_class(value)
+        if message == "" and "message" in value:
+            message = value["message"]
+
+        screen = None  # type: ignore[assignment]
+        if "screen" in value:
+            screen = value["screen"]
+
+        stacktrace = None
+        st_value = value.get("stackTrace") or value.get("stacktrace")
+        if st_value:
+            if isinstance(st_value, str):
+                stacktrace = st_value.split("\n")
+            else:
+                stacktrace = []
+                try:
+                    for frame in st_value:
+                        line = frame.get("lineNumber", "")
+                        file = frame.get("fileName", "<anonymous>")
+                        if line:
+                            file = f"{file}:{line}"
+                        meth = frame.get("methodName", "<anonymous>")
+                        if "className" in frame:
+                            meth = f"{frame['className']}.{meth}"
+                        msg = "    at %s (%s)"
+                        msg = msg % (meth, file)
+                        stacktrace.append(msg)
+                except TypeError:
+                    pass
+        if exception_class == UnexpectedAlertPresentException:
+            alert_text = None
+            if "data" in value:
+                alert_text = value["data"].get("text")
+            elif "alert" in value:
+                alert_text = value["alert"].get("text")
+            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here
+>       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.ElementNotInteractableException: Message: element not interactable
+E         (Session info: chrome=135.0.7049.84)
+E       Stacktrace:
+E               GetHandleVerifier [0x00007FF6FFC71F55+78133]
+E               GetHandleVerifier [0x00007FF6FFC71FB0+78224]
+E               (No symbol) [0x00007FF6FFA38FEC]
+E               (No symbol) [0x00007FF6FFA90654]
+E               (No symbol) [0x00007FF6FFA82164]
+E               (No symbol) [0x00007FF6FFAB715A]
+E               (No symbol) [0x00007FF6FFA81A16]
+E               (No symbol) [0x00007FF6FFAB7370]
+E               (No symbol) [0x00007FF6FFADF21F]
+E               (No symbol) [0x00007FF6FFAB6F33]
+E               (No symbol) [0x00007FF6FFA80358]
+E               (No symbol) [0x00007FF6FFA810C3]
+E               GetHandleVerifier [0x00007FF6FFF3BA8D+3001453]
+E               GetHandleVerifier [0x00007FF6FFF35E72+2977874]
+E               GetHandleVerifier [0x00007FF6FFF5497D+3103581]
+E               GetHandleVerifier [0x00007FF6FFC8C7EA+186826]
+E               GetHandleVerifier [0x00007FF6FFC943FF+218591]
+E               GetHandleVerifier [0x00007FF6FFC79D94+110452]
+E               GetHandleVerifier [0x00007FF6FFC79F42+110882]
+E               GetHandleVerifier [0x00007FF6FFC60379+5465]
+E               BaseThreadInitThunk [0x00007FFEB0EA7374+20]
+E               RtlUserThreadStart [0x00007FFEB171CC91+33]
+
+.venv\Lib\site-packages\selenium\webdriver\remote\errorhandler.py:245: ElementNotInteractableException
+======================================================================================================== warnings summary ========================================================================================================= 
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:958: 28 warnings
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:958: DeprecationWarning: ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    inlocs = ast.Compare(ast.Str(name.id), [ast.In()], [locs])
+
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:961: 27 warnings
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:961: DeprecationWarning: ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    expr = ast.IfExp(test, self.display(name), ast.Str(name.id))
+
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:1071: 16 warnings
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:1071: DeprecationWarning: ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    syms.append(ast.Str(sym))
+
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:1073: 16 warnings
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:1073: DeprecationWarning: ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    expls.append(ast.Str(expl))
+
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:823: 85 warnings
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:823: DeprecationWarning: ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    keys = [ast.Str(key) for key in current.keys()]
+
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:935: 16 warnings
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:935: DeprecationWarning: ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    template = ast.BinOp(assertmsg, ast.Add(), ast.Str(explanation))
+
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:947: 17 warnings
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:947: DeprecationWarning: ast.NameConstant is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    clear = ast.Assign(variables, ast.NameConstant(None))
+
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933
+  D:\GitProjects\30_5_1_selenium_elements\.venv\Lib\site-packages\_pytest\assertion\rewrite.py:933: DeprecationWarning: ast.Str is deprecated and will be removed in Python 3.14; use ast.Constant instead
+    assertmsg = ast.Str("")
+
+test_se.py::test_show_all_pets
+test_se.py::test_pet_list
+  D:\GitProjects\30_5_1_selenium_elements\test_se.py:9: DeprecationWarning: executable_path has been deprecated, please pass in a Service object
+    driver = webdriver.Chrome('D:/PyProjects/Chrdrv/chromedriver-win64/chromedriver.exe')
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+===================================================================================================== short test summary info ===================================================================================================== 
+FAILED test_se.py::test_show_all_pets - selenium.common.exceptions.TimeoutException: Message:
+FAILED test_se.py::test_pet_list - selenium.common.exceptions.ElementNotInteractableException: Message: element not interactable
+================================================================================================ 2 failed, 216 warnings in 29.47s ================================================================================================= 
+(.venv) PS D:\GitProjects\30_5_1_selenium_elements> 
